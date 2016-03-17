@@ -1,0 +1,1 @@
+FROM duncant/baseimage
