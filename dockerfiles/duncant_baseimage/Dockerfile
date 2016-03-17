@@ -8,7 +8,13 @@ FROM phusion/baseimage:0.9.18
 CMD ["/sbin/my_init"]
 
 # Lets update to the latest versions of anything installed
-RUN apt-get -y update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+
+# Stupid proxy issues, use ftp rather than http
+RUN sed -i.bak 's/http/ftp/' /etc/apt/sources.list
+RUN apt-get clean
+
+RUN apt-get update 
+RUN apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 
 # I want ssh enabled inside all my containers
 RUN rm -f /etc/service/sshd/down
@@ -21,6 +27,6 @@ RUN chmod 600 /root/.ssh/authorized_keys
 RUN touch /etc/service/cron/down
 
 # Clean up APT when we're done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*
 
 

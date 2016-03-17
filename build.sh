@@ -39,8 +39,7 @@ echo "Using baseimage $IMAGE_VERSION (ID $IMAGE_ID)"
 
 if [[ $# -eq 0 ]]
 then
-    echo" No projects listed, building all ($ALL_COMPONENTS)"
-    $@ = $ALL_COMPONENTS
+    echo "Usage: $0 <component> [<component> ...]" 
 else
     echo "Attempting to build components $@"
     echo
@@ -49,6 +48,9 @@ fi
 component_found "rabbit" $@
 if [[ $? -ne 0 ]]
 then
-    echo "Building a rabbit docker image"
-    sudo docker build --no-cache -t duncant/rabbit:$VERSION dockerfiles/rabbit
+    echo "Building a rabbit docker image $VERSION"
+    # FIXME: We should be able to use duncant/baseimage:latest in the Dockerfile
+    #        rather than messing with sed
+    sed "s/{{BASEIMAGE}}/$IMAGE_ID/" dockerfiles/rabbit/Dockerfile > dockerfiles/rabbit/Dockerfile.tmp
+    sudo docker build --no-cache -t duncant/rabbit:$VERSION -f dockerfiles/rabbit/Dockerfile.tmp dockerfiles/rabbit
 fi
