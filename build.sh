@@ -54,3 +54,13 @@ then
     sed "s/{{BASEIMAGE}}/$IMAGE_ID/" dockerfiles/rabbit/Dockerfile > dockerfiles/rabbit/Dockerfile.tmp
     sudo docker build --no-cache -t duncant/rabbit:$VERSION -f dockerfiles/rabbit/Dockerfile.tmp dockerfiles/rabbit
 fi
+
+component_found "mysql" $@
+if [[ $? -ne 0 ]]
+then
+    echo "Building a mysql docker image $VERSION"
+    # FIXME: We should be able to use duncant/baseimage:latest in the Dockerfile
+    #        rather than messing with sed
+    sed "s/{{BASEIMAGE}}/$IMAGE_ID/" dockerfiles/mysql/Dockerfile > dockerfiles/mysql/Dockerfile.tmp
+    sudo docker build --no-cache -t duncant/mysql:$VERSION -f dockerfiles/mysql/Dockerfile.tmp dockerfiles/mysql
+fi

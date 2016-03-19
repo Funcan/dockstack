@@ -1,0 +1,8 @@
+#!/bin/bash
+
+/usr/sbin/mysqld &
+
+sleep 5
+
+mysql -uroot -pSom3Passw0rd -h127.0.0.1 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by 'Som3Passw0rd';"
+
