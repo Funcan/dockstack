@@ -64,3 +64,13 @@ then
     sed "s/{{BASEIMAGE}}/$IMAGE_ID/" dockerfiles/mysql/Dockerfile > dockerfiles/mysql/Dockerfile.tmp
     sudo docker build --no-cache -t duncant/mysql:$VERSION -f dockerfiles/mysql/Dockerfile.tmp dockerfiles/mysql
 fi
+
+component_found "cinder-base" $@
+if [[ $? -ne 0 ]]
+then
+    echo "Building a cinder-base docker image $VERSION"
+    # FIXME: We should be able to use duncant/baseimage:latest in the Dockerfile
+    #        rather than messing with sed
+    sed "s/{{BASEIMAGE}}/$IMAGE_ID/" dockerfiles/cinder-service-base/Dockerfile > dockerfiles/cinder-service-base/Dockerfile.tmp
+    sudo docker build --no-cache -t duncant/cinder-service-base:$VERSION -f dockerfiles/cinder-service-base/Dockerfile.tmp dockerfiles/cinder-service-base
+fi

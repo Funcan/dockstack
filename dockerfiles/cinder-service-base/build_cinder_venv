@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+GITREF=$1
+
+apt-get install -y python-dev libxml2-dev libmysqlclient-dev libxslt1-dev libpq-dev zlib1g-dev python-gdbm
+
+git clone https://github.com/openstack/cinder
+cd cinder
+git checkout $GITREF
+
+# Not sure if there's an advantage to using a venv here, since we've got the
+# filesystem to ourselves thanks to docker...
+virtualenv cinder-venv
+. ./cinder-venv/bin/activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+python setup.py develop
