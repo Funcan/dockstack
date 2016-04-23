@@ -1,0 +1,26 @@
+Make sure the rabbit image actually starts the service - DONE
+
+Create the MYSQL image
+    Either hard-code the password or poke it in via docker environment variables
+
+Create cinder-api image
+    Suck in the rabbit and mysql variables via docker environment variables
+    - The startup script for c-vol service can poke them into the config file
+      template before starting the service
+
+Create cinder-scheduler image
+
+Create cinder-volume-lvm image
+
+Create nova-api image
+
+Create other nova bits
+
+Create Glance images
+
+Create swift images
+
+Create cinder-backup-swift image
+
+Possible improvements to the rabbit image build: start rabbit service during
+the build so you can set passwords, then shut it down again
