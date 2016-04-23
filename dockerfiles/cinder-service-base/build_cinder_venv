@@ -17,4 +17,14 @@ virtualenv cinder-venv
 pip install --upgrade pip
 pip install -r requirements.txt
 
+pip install --upgrade tox
+
 python setup.py develop
+
+tox -egenconfig
+cp etc/cinder/cinder.conf.sample /etc/cinder/cinder.conf
+cp etc/cinder/api-paste.ini /etc/cinder/
+cp etc/cinder/policy.json /etc/cinder/
+cp etc/cinder/rootwrap.conf /etc/cinder/
+cp -r etc/cinder/rootwrap.d /etc/cinder/
+
